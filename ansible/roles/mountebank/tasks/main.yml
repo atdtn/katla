@@ -1,0 +1,21 @@
+---
+
+- name: Generate config files
+  template:
+    src: "{{item.src}}"
+    dest: "{{ deploy_folder }}/{{item.dest}}"
+  with_items: "{{ configs_list }}"
+
+- name: Check the docker-compose configs
+  shell: chdir={{ deploy_folder }} docker-compose config
+  register: docker_compose_config
+
+- name: Display docker-compose config
+  debug:
+    msg: "{{ docker_compose_config.stdout }}"
+
+- name: re-pull the docker image if the local image is not the same
+  shell: chdir={{ deploy_folder }} docker-compose pull
+
+- name: Start {{ service }} in docker
+  shell: chdir={{ deploy_folder }} docker-compose up -d {{ docker_compose_options | default('') }}

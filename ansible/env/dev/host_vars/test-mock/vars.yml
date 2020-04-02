@@ -1,0 +1,14 @@
+---
+service: test-mock
+ansible_host: localhost
+ansible_user: root
+deploy_folder: /tmp
+
+# Variables for docker-compose
+EXTERNAL_PORT: 2525
+DOCKER_HTTP_PORT: 2525
+IMAGE: andyrbell/mountebank
+TAG: latest
+
+configs_list:
+  - { src: 'docker-compose.yml.j2', dest: 'docker-compose.yml' }

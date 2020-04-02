@@ -1,0 +1,17 @@
+version: "2.4"
+services:
+
+ middleware:
+  image: {{ IMAGE }}:{{ TAG }}
+  restart: "always"
+  ports:
+   - "{{ EXTERNAL_PORT }}:{{ DOCKER_HTTP_PORT }}"
+  healthcheck:
+     test: ["CMD", "nc", "-z", "localhost", "{{ DOCKER_HTTP_PORT }}"]
+     interval: 1m
+     timeout: 10s
+     retries: 3
+     start_period: 30s
+  mem_limit: 500mb
+  mem_reservation: 250mb
+  pids_limit: 1024
